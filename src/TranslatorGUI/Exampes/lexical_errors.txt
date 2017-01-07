@@ -1,0 +1,8 @@
+void f()
+{	
+	float tooLongIdentifier = 42;
+	int 1wrongId = 42;
+	int rangeOverflow = 99999999999;
+	#####@@@@@
+	/* unclosed comment
+}

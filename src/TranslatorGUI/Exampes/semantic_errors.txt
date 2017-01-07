@@ -1,0 +1,16 @@
+void id ()
+{
+	int f = 7;
+	if (1 > 2 * 6 + 4)
+	{
+		int f = 3;
+		write(f);
+	};
+	
+	for ( int i = 7; i < 42; i = i + 1)
+	{
+		write(j);
+	};
+
+	void v = 2 + 2 * 2;
+}

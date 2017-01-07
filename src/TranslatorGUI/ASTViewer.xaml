@@ -1,0 +1,25 @@
+﻿<Window x:Class="TranslatorGUI.ASTViewer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Abstract syntax tree &amp; code viewer" Height="556" Width="652"
+        TextOptions.TextFormattingMode="Display" FontFamily="Consolas" FontSize="11">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="100"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <TreeView Name="TreeView"/>
+        </ScrollViewer>
+        <ListView Grid.Column="1" Name="CodeList">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="100" Header="Op code"  DisplayMemberBinding="{Binding Path=OpCode}"/>
+                    <GridViewColumn Width="100" Header="Arg1" DisplayMemberBinding="{Binding Path=Arg1}"/>
+                    <GridViewColumn Width="100" Header="Arg2" DisplayMemberBinding="{Binding Path=Arg2}"/>
+                    <GridViewColumn Width="100" Header="Result" DisplayMemberBinding="{Binding Path=Result}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>
