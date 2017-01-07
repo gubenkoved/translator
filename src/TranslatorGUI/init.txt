@@ -1,0 +1,23 @@
+void f()
+{	
+	float i = ln(35);
+	int j = 2 - 2 * 2;
+
+	if (i >= j * 4)
+	{
+		// swap i and j
+		int tmp = i;
+		i = j;
+		j = tmp;
+	} else
+	{
+		i = tan(cos(abs(2.0+2*3)+6.5)*5);
+	};
+
+	write(i * 3, j / 2);
+
+	for(int k = 0; k < 10; k = k + 1)
+	{
+		k = i * j + k;
+	};
+}

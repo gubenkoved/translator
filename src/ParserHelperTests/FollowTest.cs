@@ -32,6 +32,6 @@ namespace ParserHelperTests
         {
             var productions = MyLanguageGrammar.ProcessedProductions;
             var FOLLOW_E = Helper.Follow(productions, FormalNonterminals.EXPRESSION, FormalNonterminals.FUNCTION);
-        }        
+        }
     }
 }
