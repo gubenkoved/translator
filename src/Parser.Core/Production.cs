@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Parser.Core
+﻿namespace Parser.Core
 {
     /// <summary>
     /// Production in the context free grammar
@@ -13,19 +8,18 @@ namespace Parser.Core
         // E                        ->     a b C D 
         // ^ left part nonterminal         ^^^^^^^ right part symbols chain
 
-        public Nonterminal LeftPart { get; private set; }
-        public SymbolsChain RightPart { get; private set; }
+        public Nonterminal NonTerminal { get; private set; }
+        public SymbolsChain Replacement { get; private set; }
 
-        public Production(Nonterminal leftPart, SymbolsChain rightPart)
+        public Production(Nonterminal nonTerminal, SymbolsChain replacement)
         {
-            LeftPart = leftPart;
-
-            RightPart = rightPart;
+            NonTerminal = nonTerminal;
+            Replacement = replacement;
         }
 
         public override string ToString()
         {
-            return string.Format("{0} -> {1}", LeftPart, RightPart);
+            return string.Format("{0} -> {1}", NonTerminal, Replacement);
         }
     }
 }

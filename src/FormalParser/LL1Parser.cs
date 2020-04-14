@@ -104,8 +104,8 @@ namespace FormalParser
 
                     _stack.Pop(); // delete disclosing nonterminal
 
-                    if (!production.RightPart.IsEpsilonChain)
-                        production.RightPart.ReverseForEach(s => _stack.Push(s)); // and push right parts of productions
+                    if (!production.Replacement.IsEpsilonChain)
+                        production.Replacement.ReverseForEach(s => _stack.Push(s)); // and push right parts of productions
 
                     ConstructSyntaxTree(production);
 
@@ -164,10 +164,10 @@ namespace FormalParser
 
         private void ConstructSyntaxTree(Production usedProduction)
         {
-            Nonterminal nonterminal = usedProduction.LeftPart;
+            Nonterminal nonterminal = usedProduction.NonTerminal;
             SyntaxTreeNode node = _syntaxTree.FindFirst(n => n.HasNoChildren && n.Value.Equals(nonterminal));
 
-            foreach (var symbol in usedProduction.RightPart)
+            foreach (var symbol in usedProduction.Replacement)
             {
                 node.AddChild(new SyntaxTreeNode(symbol.CreateCopy()));
             }

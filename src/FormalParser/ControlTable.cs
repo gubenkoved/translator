@@ -32,18 +32,18 @@ namespace FormalParser
             foreach (Production production in productions)
             {
                 // FIRST(alpha)
-                ISet<Terminal> first = Helper.First(productions, production.RightPart);
+                ISet<Terminal> first = Helper.First(productions, production.Replacement);
 
                 foreach (Terminal terminal in first)
-                    this[production.LeftPart, terminal] = production;
+                    this[production.NonTerminal, terminal] = production;
 
                 if (first.Contains(GeneralizedTerminal.Epsilon))
                 {
                     // FOLLOW(A)
-                    ISet<Terminal> follow = Helper.Follow(productions, production.LeftPart, axiom);
+                    ISet<Terminal> follow = Helper.Follow(productions, production.NonTerminal, axiom);
 
                     foreach (Terminal terminal in follow)
-                        this[production.LeftPart, terminal] = production;
+                        this[production.NonTerminal, terminal] = production;
                 }
             }
 

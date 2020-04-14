@@ -26,11 +26,11 @@ namespace Parser.Core
             else
             {
                 // A -> ..., A - specified symbol
-                var appropriateProductions = productions.Where(p => p.LeftPart.Kind == (symbol as Nonterminal).Kind);
+                var appropriateProductions = productions.Where(p => p.NonTerminal.Kind == (symbol as Nonterminal).Kind);
 
                 foreach (var prod in appropriateProductions)
                 {
-                    IEnumerator<Symbol> enumerator = prod.RightPart.GetEnumerator();
+                    IEnumerator<Symbol> enumerator = prod.Replacement.GetEnumerator();
                     bool allSymbolsIsEpsilonGenerating = true;
 
                     while (enumerator.MoveNext())
@@ -91,19 +91,19 @@ namespace Parser.Core
             }
 
             // X -> ... A ..., A - specified symbol
-            var appropriateProductions = productions.Where(p => p.RightPart.Contains(nonterminal));
+            var appropriateProductions = productions.Where(p => p.Replacement.Contains(nonterminal));
 
             foreach (var production in appropriateProductions)
             {
                 // X -> ... A
-                if (production.RightPart.Last.Equals(nonterminal))
+                if (production.Replacement.Last.Equals(nonterminal))
                 {
                     // preventing infinite follow call
-                    if (!production.LeftPart.Equals(nonterminal))
-                        follow.UnionWith(Follow(productions, production.LeftPart, axiom));
+                    if (!production.NonTerminal.Equals(nonterminal))
+                        follow.UnionWith(Follow(productions, production.NonTerminal, axiom));
                 }
 
-                foreach (var rightSideChain in RightSideChains(production.RightPart, nonterminal))
+                foreach (var rightSideChain in RightSideChains(production.Replacement, nonterminal))
                 //var rightSideChain = FirstRightSideChain(production.RightPart, nonterminal);
                 {
                     // X -> ... A g
@@ -116,8 +116,8 @@ namespace Parser.Core
                     if (First(productions, rightSideChain).Contains(GeneralizedTerminal.Epsilon))
                     {
                         // preventing infinite follow call
-                        if (!production.LeftPart.Equals(nonterminal))
-                            follow.UnionWith(Follow(productions, production.LeftPart, axiom));
+                        if (!production.NonTerminal.Equals(nonterminal))
+                            follow.UnionWith(Follow(productions, production.NonTerminal, axiom));
                     }
                 }
             }

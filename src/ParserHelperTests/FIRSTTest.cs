@@ -73,7 +73,7 @@ namespace ParserHelperTests
 
             foreach (var production in MyLanguageGrammar.Productions)
             {
-                var first = Helper.First(MyLanguageGrammar.Productions, production.RightPart);
+                var first = Helper.First(MyLanguageGrammar.Productions, production.Replacement);
 
                 Trace.WriteLine(string.Format("Select({0})={{{1}}}", production, string.Join(", ", first)));
             }

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Lexer.Core;
 
 namespace Parser.Core
@@ -28,13 +26,6 @@ namespace Parser.Core
                     return null;
             }
         }
-        public bool IsEndOfStream
-        {
-            get
-            {
-                return Current == null;
-            }
-        }
 
         public Token Last
         {
@@ -48,7 +39,7 @@ namespace Parser.Core
         }
 
         public Token MoveNext()
-        {            
+        {
             if (_currentIndex < _tokens.Count)
             {
                 ++_currentIndex;
@@ -67,19 +58,6 @@ namespace Parser.Core
             MoveNext();
 
             return current;
-        }
-
-        public Token MovePrevious()
-        {
-            if (_currentIndex > 0)
-            {
-                --_currentIndex;
-                return Current;
-            }
-            else
-            {
-                return null;
-            }
         }
 
         public TokenStreamState GetState()
