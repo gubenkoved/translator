@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using FiniteStateRecognizer;
+using FormalParser.MyGrammar;
 using Lexer.Core;
 using RecursiveDescentParser;
-using FiniteStateRecognizer;
-using FormalParser;
 
 namespace TranslatorGUI
 {

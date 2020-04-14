@@ -40,14 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutomateAction.cs" />
     <Compile Include="ControlTable.cs" />
-    <Compile Include="FormalNonterminals.cs" />
+    <Compile Include="MyGrammar\MyNonterminals.cs" />
     <Compile Include="LL1Parser.cs" />
-    <Compile Include="MyGenerator.cs" />
-    <Compile Include="MyLanguageGrammar.cs" />
-    <Compile Include="MyLL1Parser.cs" />
-    <Compile Include="MySemanticChecker.cs" />
+    <Compile Include="MyGrammar\MyGenerator.cs" />
+    <Compile Include="MyGrammar\MyLanguageGrammar.cs" />
+    <Compile Include="MyGrammar\MyLL1Parser.cs" />
+    <Compile Include="MyGrammar\MySemanticChecker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

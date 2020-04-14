@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Lexer.Core;
 
 namespace Parser.Core
 {
@@ -10,15 +7,12 @@ namespace Parser.Core
     {
         private static ISet<Terminal> ExceptTerminal(this ISet<Terminal> set, Terminal terminal)
         {
-            //var newElements = set.Except<Terminal>(new[] { terminal }, Symbol.EqualityComprarer);
-            //return new HashSet<Terminal>(newElements, Symbol.EqualityComprarer);            
             return new HashSet<Terminal>(set.Except(new[] { terminal }));
         }
 
         private static HashSet<Terminal> CreateNewEmptyTerminalSet()
         {
             return new HashSet<Terminal>();
-            //return new HashSet<Terminal>(Symbol.EqualityComprarer);
         }
 
         public static ISet<Terminal> First(IEnumerable<Production> productions, Symbol symbol)
@@ -36,9 +30,9 @@ namespace Parser.Core
 
                 foreach (var prod in appropriateProductions)
                 {
-                    var enumerator = prod.RightPart.GetEnumerator();
-                    var allSymbolsIsEpsilonGenerating = true;
-                    
+                    IEnumerator<Symbol> enumerator = prod.RightPart.GetEnumerator();
+                    bool allSymbolsIsEpsilonGenerating = true;
+
                     while (enumerator.MoveNext())
                     {
                         var curSymbolFirst = First(productions, enumerator.Current);
@@ -68,11 +62,10 @@ namespace Parser.Core
 
             bool allSymbolsIsEpsilonGenerating = true;
             var enumerator = chain.GetEnumerator();
-            ISet<Terminal> curFirst = null;
 
             while (enumerator.MoveNext())
             {
-                curFirst = First(productions, enumerator.Current);
+                ISet<Terminal> curFirst = First(productions, enumerator.Current);
                 first.UnionWith(curFirst.ExceptTerminal(GeneralizedTerminal.Epsilon));
 
                 if (!curFirst.Contains(GeneralizedTerminal.Epsilon))
@@ -145,9 +138,9 @@ namespace Parser.Core
         private static IEnumerable<SymbolsChain> RightSideChains(SymbolsChain chain, Nonterminal nonterminal)
         {
             var rightChains = new List<SymbolsChain>();
-            
+
             SymbolsChain current = chain;
-            
+
             do
             {
                 current = FirstRightSideChain(current, nonterminal);

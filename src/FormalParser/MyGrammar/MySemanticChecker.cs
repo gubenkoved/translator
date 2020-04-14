@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using SemanticChecking;
 using Lexer.Core;
 using Parser.Core;
 using Parser.Core.TreeWalker;
+using SemanticChecking;
 
-namespace FormalParser
+namespace FormalParser.MyGrammar
 {
     public class MySemanticChecker : SemanticCheckerBase
     {
@@ -54,7 +52,7 @@ namespace FormalParser
 
         private void TunnelingProcessNode(SyntaxTreeNode node)
         {
-            if (node.Value.Equals(FormalNonterminals.STATEMENTS_BLOCK))
+            if (node.Value.Equals(MyNonterminals.STATEMENTS_BLOCK))
             {
                 node.Value[DEFINDED_VARIABLES_ATTRIBUTE_KEY] = new List<Token>();
             }
@@ -62,18 +60,18 @@ namespace FormalParser
 
         private void BubblingProcessNode(SyntaxTreeNode node)
         {
-            if (node.Value.Equals(FormalNonterminals.ASSIGN_STATEMENT))
+            if (node.Value.Equals(MyNonterminals.ASSIGN_STATEMENT))
             {
-                var idDeclaration = node[FormalNonterminals.ID_DECLARATION];
+                var idDeclaration = node[MyNonterminals.ID_DECLARATION];
 
                 if (idDeclaration != null)
                 {
-                    var activeScope = Parser.Core.TreeWalker.WalkHelper.FindParentWithNonterminal(node, FormalNonterminals.STATEMENTS_BLOCK);
+                    var activeScope = Parser.Core.TreeWalker.WalkHelper.FindParentWithNonterminal(node, MyNonterminals.STATEMENTS_BLOCK);
                     var idToken = (idDeclaration[TokenType.Identifier].Value as ConcreteTerminal).Token;
 
                     AddDefindedVariableAttrubute(activeScope, idToken);
 
-                    var typeToken = (idDeclaration[FormalNonterminals.TYPE][0].Value as ConcreteTerminal).Token;
+                    var typeToken = (idDeclaration[MyNonterminals.TYPE][0].Value as ConcreteTerminal).Token;
 
                     if (typeToken.Value == "void")
                         _errors.Add(new Error(typeToken, ErrorKind.Semantic, "Void can not be used as variable type"));
@@ -86,14 +84,14 @@ namespace FormalParser
                 }
             }
 
-            if (node.Value.Equals(FormalNonterminals.FACTOR) && node[TokenType.Identifier] != null)
+            if (node.Value.Equals(MyNonterminals.FACTOR) && node[TokenType.Identifier] != null)
             {
                 var id = (node[TokenType.Identifier].Value as ConcreteTerminal).Token;
 
                 CheckVariableDefinition(node, id);
             }
 
-            if (node.Value.Equals(FormalNonterminals.FUNCTION_CALL))
+            if (node.Value.Equals(MyNonterminals.FUNCTION_CALL))
             {
                 CheckArity(node);
             }
@@ -102,7 +100,7 @@ namespace FormalParser
         private void CheckArity(SyntaxTreeNode funcCallNode)
         {
             var funcToken = (funcCallNode[TokenType.Function].Value as ConcreteTerminal).Token;
-            var paramListNode = funcCallNode[FormalNonterminals.PARAM_BLOCK][FormalNonterminals.PARAM_LIST];
+            var paramListNode = funcCallNode[MyNonterminals.PARAM_BLOCK][MyNonterminals.PARAM_LIST];
             int arity = CalcArity(paramListNode);
 
             if (_arity.ContainsKey(funcToken.Value) && _arity[funcToken.Value] != arity)
@@ -116,7 +114,7 @@ namespace FormalParser
             if (node.IsEpsilon)
                 return 0;
             else
-                return 1 + CalcArity(node[FormalNonterminals.PARAM_LIST_DASH]);
+                return 1 + CalcArity(node[MyNonterminals.PARAM_LIST_DASH]);
         }
 
         private void CheckVariableDefinition(SyntaxTreeNode node, Token id)
@@ -129,10 +127,10 @@ namespace FormalParser
         {
             var activeScopes = Parser.Core.TreeWalker.WalkHelper.GetAllParents(node)
                 .Select(n => n.Value)
-                .Where(s => s.Equals(FormalNonterminals.STATEMENTS_BLOCK))
+                .Where(s => s.Equals(MyNonterminals.STATEMENTS_BLOCK))
                 .ToList();
 
-            if (node.Value.Equals(FormalNonterminals.STATEMENTS_BLOCK))
+            if (node.Value.Equals(MyNonterminals.STATEMENTS_BLOCK))
                 activeScopes.Add(node.Value);
 
             return activeScopes.Any(scope =>

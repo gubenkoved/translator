@@ -1,12 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using FormalParser.MyGrammar;
+using Lexer.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Parser.Core;
-using FormalParser;
-using Lexer.Core;
-using System.Diagnostics;
 
 namespace ParserHelperTests
 {
@@ -17,11 +14,11 @@ namespace ParserHelperTests
         public void FirstFunctionTest()
         {
             var productions = MyLanguageGrammar.ProcessedProductions;
-            var FIRST_E = Helper.First(productions, FormalNonterminals.EXPRESSION);
-            var FIRST_E_DASH = Helper.First(productions, FormalNonterminals.EXPRESSION_DASH);
-            var FIRST_T = Helper.First(productions, FormalNonterminals.TERM);
-            var FIRST_T_DASH = Helper.First(productions, FormalNonterminals.TERM_DASH);
-            var FIRST_F = Helper.First(productions, FormalNonterminals.FACTOR);
+            var FIRST_E = Helper.First(productions, MyNonterminals.EXPRESSION);
+            var FIRST_E_DASH = Helper.First(productions, MyNonterminals.EXPRESSION_DASH);
+            var FIRST_T = Helper.First(productions, MyNonterminals.TERM);
+            var FIRST_T_DASH = Helper.First(productions, MyNonterminals.TERM_DASH);
+            var FIRST_F = Helper.First(productions, MyNonterminals.FACTOR);
 
             Assert.IsTrue(FIRST_E.SetEquals(new HashSet<Terminal>()
             {
@@ -53,7 +50,7 @@ namespace ParserHelperTests
         public void FirstFunctionForChainTest()
         {
             var productions = MyLanguageGrammar.ProcessedProductions;
-            var FIRST_E_DASH_T = Helper.First(productions, new SymbolsChain(FormalNonterminals.EXPRESSION_DASH, FormalNonterminals.TERM));
+            var FIRST_E_DASH_T = Helper.First(productions, new SymbolsChain(MyNonterminals.EXPRESSION_DASH, MyNonterminals.TERM));
 
             Assert.IsTrue(FIRST_E_DASH_T.SetEquals(new HashSet<Terminal>()
             {

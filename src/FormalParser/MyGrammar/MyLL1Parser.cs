@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Parser.Core;
+﻿using Parser.Core;
 
-namespace FormalParser
+namespace FormalParser.MyGrammar
 {
     public static class MyLL1Parser
     {
@@ -16,7 +12,7 @@ namespace FormalParser
                 if (_instance != null)
                     return _instance;
                 
-                Nonterminal axiom = FormalNonterminals.FUNCTION;
+                Nonterminal axiom = MyNonterminals.FUNCTION;
                 ControlTable ct = new ControlTable();
 
                 ct.FillByProcessedProductions(MyLanguageGrammar.ProcessedProductions, axiom);

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Parser.Core;
+﻿using Parser.Core;
 
-namespace FormalParser
+namespace FormalParser.MyGrammar
 {
-    public class FormalNonterminals
+    public class MyNonterminals
     {
         public static readonly Nonterminal EXPRESSION           = new Nonterminal("expression");
         public static readonly Nonterminal EXPRESSION_DASH      = new Nonterminal("expression_dash");

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Parser.Core;
 
 namespace FormalParser
 {
     public class ControlTable
     {
-        private Dictionary<Nonterminal, Dictionary<Terminal, AutomateAction>> _table;
+        private Dictionary<Nonterminal, Dictionary<Terminal, Production>> _table;
         public int ElementsCount
         {
             get
@@ -19,7 +17,7 @@ namespace FormalParser
 
         public ControlTable()
         {
-            _table = new Dictionary<Nonterminal, Dictionary<Terminal, AutomateAction>>();
+            _table = new Dictionary<Nonterminal, Dictionary<Terminal, Production>>();
         }
 
         /// <summary>
@@ -31,31 +29,27 @@ namespace FormalParser
         public void FillByProcessedProductions(IEnumerable<Production> productions, Nonterminal axiom)
         {
             // A -> alpha
-            foreach (var production in productions)
+            foreach (Production production in productions)
             {
-                var useProductionAction = AutomateAction.FromProduction(production);
-
                 // FIRST(alpha)
-                var first = Helper.First(productions, production.RightPart);
-                foreach (var terminal in first)
-                {
-                    this[production.LeftPart, terminal] = useProductionAction;
-                }
+                ISet<Terminal> first = Helper.First(productions, production.RightPart);
+
+                foreach (Terminal terminal in first)
+                    this[production.LeftPart, terminal] = production;
 
                 if (first.Contains(GeneralizedTerminal.Epsilon))
                 {
                     // FOLLOW(A)
-                    var follow = Helper.Follow(productions, production.LeftPart, axiom);
-                    foreach (var terminal in follow)
-                    {
-                        this[production.LeftPart, terminal] = useProductionAction;
-                    }                    
+                    ISet<Terminal> follow = Helper.Follow(productions, production.LeftPart, axiom);
+
+                    foreach (Terminal terminal in follow)
+                        this[production.LeftPart, terminal] = production;
                 }
             }
 
         }
 
-        public AutomateAction this[Nonterminal nt, Terminal t]
+        public Production this[Nonterminal nt, Terminal t]
         {
             get
             {
@@ -74,13 +68,13 @@ namespace FormalParser
             set
             {
                 if (!_table.ContainsKey(nt))
-                    _table.Add(nt, new Dictionary<Terminal, AutomateAction>());
+                    _table.Add(nt, new Dictionary<Terminal, Production>());
 
                 _table[nt][t] = value;
             }
         }
 
-        public IDictionary<Terminal, AutomateAction> this[Nonterminal nt]
+        public IDictionary<Terminal, Production> this[Nonterminal nt]
         {
             get
             {

@@ -27,13 +27,12 @@ namespace FormalParser
         private TokenStream _tokenStream;
 
         private SyntaxTree _syntaxTree;
-        //private SyntaxTreeNode _lastSubstitutedNode;
 
         public LL1Parser(Nonterminal axiom, ControlTable controlTable)
         {
             _axiom = axiom;
 
-            _controlTable = controlTable;            
+            _controlTable = controlTable;
         }
 
         private void Init(TokenStream ts)
@@ -87,42 +86,35 @@ namespace FormalParser
 
                 if (magazineSymbol is Nonterminal)
                 {
-                    var magazineNonterminal = (Nonterminal)magazineSymbol;
-                    AutomateAction action = _controlTable[magazineNonterminal, inputTerminal];
+                    Nonterminal magazineNonterminal = (Nonterminal)magazineSymbol;
+                    Production production = _controlTable[magazineNonterminal, inputTerminal];
 
-                    if (action == null && CanBeEpsilon(magazineNonterminal))
+                    if (production == null && CanBeEpsilon(magazineNonterminal))
                     {
                         _stack.Pop();
                         error = null;
                         return StepResults.InProgress;
                     }
                     
-                    if (action == null) // common error handling
+                    if (production == null) // common error handling
                     {
                         error = new Error(_tokenStream.Current, ErrorKind.Syntax, GenerateErrorMessage(magazineNonterminal, inputTerminal));
                         return StepResults.RejectInput;
                     }
 
-                    switch (action.Kind)
-                    {
-                        case AutomateActionKind.UseProduction:
-                            _stack.Pop(); // delete disclosing nonterminal
-                            Production production = action.GetProduction();
-                            if (!production.RightPart.IsEpsilonChain)
-                                production.RightPart.ReverseForEach(s => _stack.Push(s)); // and push right parts of productions
-                            ConstructSyntaxTree(production);
-                            break;
-                        case AutomateActionKind.HandleError: // custom error handling
-                            break;
-                        default: break;
-                    }
+                    _stack.Pop(); // delete disclosing nonterminal
+
+                    if (!production.RightPart.IsEpsilonChain)
+                        production.RightPart.ReverseForEach(s => _stack.Push(s)); // and push right parts of productions
+
+                    ConstructSyntaxTree(production);
 
                     error = null;
                     return StepResults.InProgress;
                 }
                 else // magazineSymbol is Terminal
                 {
-                    var magazineTerminal = (Terminal)magazineSymbol;
+                    Terminal magazineTerminal = (Terminal)magazineSymbol;
 
                     if (magazineTerminal.IsAppropriateTerminal(inputTerminal))
                     {
@@ -162,10 +154,9 @@ namespace FormalParser
         {
             var expected = new List<Terminal>();
 
-            foreach (var kvp in _controlTable[nonterminal])
+            foreach (KeyValuePair<Terminal, Production> kvp in _controlTable[nonterminal])
             {
-                if (kvp.Value.Kind == AutomateActionKind.UseProduction)
-                    expected.Add(kvp.Key);
+                expected.Add(kvp.Key);
             }
 
             return expected;

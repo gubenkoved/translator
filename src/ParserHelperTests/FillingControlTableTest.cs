@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using FormalParser;
+using FormalParser.MyGrammar;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FormalParser;
-using Parser.Core;
 
 namespace ParserHelperTests
 {
@@ -17,7 +13,7 @@ namespace ParserHelperTests
             var productions = MyLanguageGrammar.ProcessedProductions;
             var controlTable = new ControlTable();
 
-            controlTable.FillByProcessedProductions(productions, FormalNonterminals.EXPRESSION);
+            controlTable.FillByProcessedProductions(productions, MyNonterminals.EXPRESSION);
 
             Assert.IsTrue(controlTable.ElementsCount == 24);
         }

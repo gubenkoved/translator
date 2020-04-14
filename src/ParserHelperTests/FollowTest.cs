@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FormalParser;
-using Parser.Core;
+﻿using System.Collections.Generic;
+using FormalParser.MyGrammar;
 using Lexer.Core;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Parser.Core;
 
 namespace ParserHelperTests
 {
@@ -16,7 +13,7 @@ namespace ParserHelperTests
         public void FollowTest()
         {
             var productions = MyLanguageGrammar.ProcessedProductions;
-            var FOLLOW_T = Helper.Follow(productions, FormalNonterminals.TERM, FormalNonterminals.EXPRESSION);
+            var FOLLOW_T = Helper.Follow(productions, MyNonterminals.TERM, MyNonterminals.EXPRESSION);
 
             Assert.IsTrue(FOLLOW_T.SetEquals(new HashSet<Terminal>()
             {
@@ -31,7 +28,7 @@ namespace ParserHelperTests
         public void FollowTest2()
         {
             var productions = MyLanguageGrammar.ProcessedProductions;
-            var FOLLOW_E = Helper.Follow(productions, FormalNonterminals.EXPRESSION, FormalNonterminals.FUNCTION);
+            var FOLLOW_E = Helper.Follow(productions, MyNonterminals.EXPRESSION, MyNonterminals.FUNCTION);
         }
     }
 }
