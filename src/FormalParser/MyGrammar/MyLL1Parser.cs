@@ -15,7 +15,7 @@ namespace FormalParser.MyGrammar
                 Nonterminal axiom = MyNonterminals.FUNCTION;
                 ControlTable ct = new ControlTable();
 
-                ct.FillByProcessedProductions(MyLanguageGrammar.ProcessedProductions, axiom);
+                ct.FillByProcessedProductions(MyLanguageGrammar.Productions, axiom);
 
                 _instance = new LL1Parser(axiom, ct);
 

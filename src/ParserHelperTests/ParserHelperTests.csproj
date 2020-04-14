@@ -51,7 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FillingControlTableTest.cs" />
-    <Compile Include="FIRSTTest.cs" />
+    <Compile Include="FirstTest.cs" />
     <Compile Include="FollowTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

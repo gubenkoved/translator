@@ -8,12 +8,12 @@ using Parser.Core;
 namespace ParserHelperTests
 {
     [TestClass]
-    public class FIRSTTest
+    public class FirstTest
     {
         [TestMethod]
         public void FirstFunctionTest()
         {
-            var productions = MyLanguageGrammar.ProcessedProductions;
+            var productions = MyLanguageGrammar.Productions;
             var FIRST_E = Helper.First(productions, MyNonterminals.EXPRESSION);
             var FIRST_E_DASH = Helper.First(productions, MyNonterminals.EXPRESSION_DASH);
             var FIRST_T = Helper.First(productions, MyNonterminals.TERM);
@@ -25,6 +25,7 @@ namespace ParserHelperTests
                 new GeneralizedTerminal(TokenType.FloatConstant),
                 new GeneralizedTerminal(TokenType.IntegerConstant),
                 new GeneralizedTerminal(TokenType.Identifier),
+                new GeneralizedTerminal(TokenType.Function),
                 new ConcreteTerminal(new Token("(", TokenType.Operator))
             }));
 
@@ -49,7 +50,7 @@ namespace ParserHelperTests
         [TestMethod]
         public void FirstFunctionForChainTest()
         {
-            var productions = MyLanguageGrammar.ProcessedProductions;
+            var productions = MyLanguageGrammar.Productions;
             var FIRST_E_DASH_T = Helper.First(productions, new SymbolsChain(MyNonterminals.EXPRESSION_DASH, MyNonterminals.TERM));
 
             Assert.IsTrue(FIRST_E_DASH_T.SetEquals(new HashSet<Terminal>()
@@ -57,6 +58,7 @@ namespace ParserHelperTests
                 new GeneralizedTerminal(TokenType.FloatConstant),
                 new GeneralizedTerminal(TokenType.IntegerConstant),
                 new GeneralizedTerminal(TokenType.Identifier),
+                new GeneralizedTerminal(TokenType.Function),
                 new ConcreteTerminal(new Token("(", TokenType.Operator)),
                 new ConcreteTerminal(new Token("+", TokenType.Operator)),
                 new ConcreteTerminal(new Token("-", TokenType.Operator))
@@ -69,9 +71,9 @@ namespace ParserHelperTests
             // to show SELECT set, run test in debug mode and see output from Debug (window Output)
             Trace.WriteLine("SELECT SET DUMP");
 
-            foreach (var production in MyLanguageGrammar.ProcessedProductions)
+            foreach (var production in MyLanguageGrammar.Productions)
             {
-                var first = Helper.First(MyLanguageGrammar.ProcessedProductions, production.RightPart);
+                var first = Helper.First(MyLanguageGrammar.Productions, production.RightPart);
 
                 Trace.WriteLine(string.Format("Select({0})={{{1}}}", production, string.Join(", ", first)));
             }
